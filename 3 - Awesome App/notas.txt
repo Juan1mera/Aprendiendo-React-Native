@@ -1,0 +1,16 @@
+Box Object Model:
+Se refiere al Alto, Ancho, Margen, Padding y Borde
+Propiedades:
+margin --> Aplica margen a los 4 lados
+marginLeft, marginRight, marginBottom, marginTop, marginVertical, marginHorizontal
+padding --> Aplica padding a los 4 lados
+paddingLeft, paddingRight, paddingBottom, paddingTop, paddingVertical, paddingHorizontal
+borderWidth --> Aplica borde a los cuatro lados
+borderLeftWidth, borderRightWidth, borderBottomWidth, borderTopWidth
+
+
+Position:
+Se refiere a posicion Absoluta, Relativa, Top, Left, Etc
+
+Flex Box:
+Se refiere a direccion, ubicacion, alineamiento, estirar, encoger, proporciones
