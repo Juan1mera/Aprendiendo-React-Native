@@ -3,25 +3,23 @@ import { PokeApi } from "../../config/api/PokeApi";
 import type { PokeAPIPaginatedResponse, PokeAPIPokemon } from "../../infrastructure/interfaces/pokeapi.interfaces";
 import { PokemonMapper } from "../../infrastructure/mappers/pokemon.mapper";
 
-export const sleep = async() => {
-    return new Promise(resolve => setTimeout(resolve, 2000));
-}
-
-
-export const getPokemons = async (page:number, limit: number = 20): Promise<Pokemon[]> => {
+export const getPokemons = async (page: number, limit: number = 20): Promise<Pokemon[]> => {
   try {
-    const url = `/pokemon?offset=${page*10}&limit=${limit}`;
+    // Cálculo correcto del offset
+    const offset = page * limit;
+    const url = `/pokemon?offset=${offset}&limit=${limit}`;
+
+    // Obtener la respuesta paginada de la API
     const { data } = await PokeApi.get<PokeAPIPaginatedResponse>(url);
 
-    const PokemonPromises = data.results.map((info) => {
-        return PokeApi.get<PokeAPIPokemon>(info.url);
+    // Mapear las promesas para obtener los detalles de cada Pokémon
+    const pokemonDetailsPromises = data.results.map(async (info) => {
+      const { data: pokemonDetails } = await PokeApi.get<PokeAPIPokemon>(info.url);
+      return PokemonMapper.PokeApiPokemonToEntity(pokemonDetails);
     });
 
-    const PokeApiPokemons = await Promise.all(PokemonPromises);
-
-    const pokemonsPromises = PokeApiPokemons.map((item) => PokemonMapper.PokeApiPokemonToEntity(item.data));
-
-    return await  Promise.all(pokemonsPromises);
+    // Resolvemos todas las promesas y retornamos los Pokémon mapeados
+    return await Promise.all(pokemonDetailsPromises);
 
   } catch (error) {
     console.error("Error al obtener Pokemons", error);

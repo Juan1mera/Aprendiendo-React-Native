@@ -1,0 +1,12 @@
+import { PokeApi } from "../../config/api/PokeApi";
+import { PokeAPIPaginatedResponse } from "../../infrastructure/interfaces/pokeapi.interfaces";
+
+export const getPokemonsNamesWithId = async () => {
+    const url = `/pokemon?limit=1000`;
+    const { data } = await PokeApi.get<PokeAPIPaginatedResponse>(url);
+
+    return data.results.map((info) => ({
+        id: Number(info.url.split('/')[6]),
+        name: info.name
+    }))
+}
