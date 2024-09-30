@@ -1,4 +1,4 @@
-package com.componentsapp
+package com.devora.componentsapp
 
 import android.os.Bundle;
 
